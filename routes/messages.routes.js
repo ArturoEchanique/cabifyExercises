@@ -9,9 +9,9 @@ router.get("/hello-world", (req, res) => {
 
 router.post("/messages", (req, res) => {
 
-    const {destination, body} = req.body
+    const {destination, message} = req.body
     messagesService
-        .sendMessage({destination, body})
+        .sendMessage({destination, message})
         .then(({data}) => {
             res.status(200).json(data)
         })
