@@ -7,7 +7,7 @@
 	},
 	"item": [
 		{
-			"name": "testing messageApp with destination empty-Expected response (400) Destination field is required",
+			"name": "testing messageApp with destination empty --- Expected response (400) Destination field is required",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -37,7 +37,7 @@
 			"response": []
 		},
 		{
-			"name": "testing messageApp with message empty-Expected response (400) Message field is required",
+			"name": "testing messageApp with message empty --- Expected response (400) Message field is required",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -67,7 +67,7 @@
 			"response": []
 		},
 		{
-			"name": "testing messageApp with extra keys-Expected response (400)-Payload must not contain keys different to _destination_ and _message",
+			"name": "testing messageApp with extra keys --- Expected response (400)-Payload must not contain keys different to _destination_ and _message",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -97,7 +97,7 @@
 			"response": []
 		},
 		{
-			"name": "testing messageApp with destination with only spaces-Expected response (400) Destination field is required",
+			"name": "testing messageApp with destination with only spaces --- Expected response (400) Destination field is required",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -127,7 +127,7 @@
 			"response": []
 		},
 		{
-			"name": "testing messageApp with message with only spaces-Expected response (400) Message field is required",
+			"name": "testing messageApp with message with only spaces --- Expected response (400) Message field is required",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -157,7 +157,7 @@
 			"response": []
 		},
 		{
-			"name": "testing messageApp without message key-Expected response (400) Message field is required",
+			"name": "testing messageApp without message key --- Expected response (400) Message field is required",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -187,7 +187,7 @@
 			"response": []
 		},
 		{
-			"name": "testing messageApp without destination key-Expected response (400) Destination field is required",
+			"name": "testing messageApp without destination key --- Expected response (400) Destination field is required",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -200,6 +200,36 @@
 				"body": {
 					"mode": "raw",
 					"raw": "{\n  \"message\": \"This is the message\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:9001/api/messages",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9001",
+					"path": [
+						"api",
+						"messages"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "testing messageApp with correct parameters --- Expected (200) Message sent",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"destination\": \"James\",\n  \"message\": \"This is the message\"\n}"
 				},
 				"url": {
 					"raw": "http://localhost:9001/api/messages",
