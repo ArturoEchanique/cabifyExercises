@@ -3,10 +3,16 @@
 ## How to test the API
 
 1. Open your terminal
-2. Go to the API holding folder
+2. Go to the messagesApp API folder
 3. Connect to the Docker containers by running the command line *docker-compose up*
 4. Go to the ``/API testing`` folder
 5. Run the command line *npm test*
+
+
+This API expects to receive a call with the POST method to the path /api/messages, the body of this call must consist of two parameters, one called destination and the other called message, whose value must be non-empty. 
+
+In case the call is successful, you will receive a response saying "Message sent", with code 200.
+
 
 ## Problems to solve
 

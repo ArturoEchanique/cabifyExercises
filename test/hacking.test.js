@@ -15,7 +15,5 @@ class MessagesService {
     }
 }
 
-sendMessage()
-
 const messagesService = new MessagesService()
 module.exports = messagesService

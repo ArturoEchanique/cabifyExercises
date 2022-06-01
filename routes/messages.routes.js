@@ -23,11 +23,12 @@ router.post("/messages", (req, res) => {
     } else if (message && checkIfEmpty(message)) {
         res.status(400).json({ message: 'Message field is required' })
     } else if (Object.keys(req.body).length > 2) {
+        console.log("object is", Object.keys(req.body))
         res.status(400).json({ message: 'Payload must not contain keys different to _destination_ and _message_' })
     } else {
         messagesService
             .sendMessage({ destination, message })
-            .then(response => { res.status(200).json(response.data) })
+            .then(response => { res.status(200).json({ message: "Message sent", response: response.data }) })
             .catch(err => res.status(500).json({ message: "The message could not be sent" }))
     }
 });
