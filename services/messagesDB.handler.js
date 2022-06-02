@@ -8,6 +8,10 @@ class MessagesDBService {
         return Message.create(newMessage)
     }
 
+    updateMessageState = (id, newState) => {
+        return Message.findByIdAndUpdate(id, {state: newState})
+    }
+
     getMessages = () => {
         return Message.find()
     }

@@ -14,7 +14,8 @@ const messageSchema = new Schema(
         },
         state: {
             type: String,
-            enum: ["NOT-SENT", "SENT-UNCONFIRMED", "SENT"]
+            enum: ["NOT-SENT", "SENT-UNCONFIRMED", "SENT"],
+            default: "NOT-SENT"
         },
     },
     {
