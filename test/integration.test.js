@@ -12,9 +12,8 @@ describe('/messages - POST', () => {
             .post('/api/messages')
             .type('form')
             .send({
-                '_method': 'post',
                 'destination': `Arturo`,
-                'body': `this is a message for Arturo`
+                'message': `this is a message for Arturo`
             })
             .end((err, res) => {
                 assert.equal(res.statusCode, 200)

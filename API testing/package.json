@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "test": "newman run APItesting.json"
+  },
+  "dependencies": {
+    "newman": "^5.3.2"
+  }
+}
