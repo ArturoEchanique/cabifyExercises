@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const MONGO_URI = process.env.MONGODB_URI || "mongodb://localhost/messagesApp";
+const MONGO_URI = process.env.MONGODB_URI || "mongodb://mongodb/messagesApp";
 
 mongoose
   .connect(MONGO_URI)

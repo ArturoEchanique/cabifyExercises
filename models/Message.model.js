@@ -3,22 +3,18 @@ const { Schema, model } = mongoose;
 
 const messageSchema = new Schema(
     {
-        owner: {
-            type: Schema.Types.ObjectId,
-            ref: "User",
-            required: true,
+        destination: {
+            type: String
         },
-        chat: {
-            type: Schema.Types.ObjectId,
-            ref: "Chat",
+        message: {
+            type: String
         },
-        messageDate: {
-            type: Date,
-            required: true,
+        number: {
+            type: Number
         },
-        text: {
+        state: {
             type: String,
-            required: true,
+            enum: ["NOT-SENT", "SENT-UNCONFIRMED", "SENT"]
         },
     },
     {
