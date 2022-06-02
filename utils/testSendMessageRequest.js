@@ -3,8 +3,8 @@ const checkIfEmpty = require("./checkIfEmpty")
 const testSendMessageRequest = (request) => {
 
     let hasFailed = false
-    let status = 0
-    let resMessage = ""
+    let status = 200
+    let resMessage = "Message sent"
 
     if (!('destination' in request)) {
         hasFailed = true
