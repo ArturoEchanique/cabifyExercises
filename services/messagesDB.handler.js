@@ -4,8 +4,8 @@ class MessagesDBService {
     constructor() {
     }
 
-    saveMessage = (newMessage) => {
-        return Message.create(newMessage)
+    saveMessage = (destination, message, number) => {
+        return Message.create({destination, message, number})
     }
 
     updateMessageState = (id, newState) => {
