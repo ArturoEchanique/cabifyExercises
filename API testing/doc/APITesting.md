@@ -33,9 +33,104 @@ While testing our API, the following actions to test were discovered:
 
 
 
-# Messages Database API Testing
+# API CONTRACT
 
-This API expects
+#Messages
+* Message object
+```
+{
+  destination: string
+  message: string
+  number: number
+  state: string enum
+}
+```
+**GET /messages**
+----
+  Returns all messages in the system.
+* **URL Params**  
+  None
+* **Data Params**  
+  None
+* **Headers**  
+  Content-Type: application/json  
+* **Success Response:**  
+* **Code:** 200  
+  **Content:**  
+```
+{
+  messages: [
+           {<message_object>},
+           {<message_object>},
+           {<message_object>}
+         ]
+}
+```
+
+**GET /users/:id/orders**
+----
+  Returns all Orders associated with the specified user.
+* **URL Params**  
+  *Required:* `id=[integer]`
+* **Data Params**  
+  None
+* **Headers**  
+  Content-Type: application/json  
+  Authorization: Bearer `<OAuth Token>`
+* **Success Response:**  
+* **Code:** 200  
+  **Content:**  
+```
+{
+  orders: [
+           {<order_object>},
+           {<order_object>},
+           {<order_object>}
+         ]
+}
+```
+* **Error Response:**  
+  * **Code:** 404  
+  **Content:** `{ error : "User doesn't exist" }`  
+  OR  
+  * **Code:** 401  
+  **Content:** `{ error : error : "You are unauthorized to make this request." }`
+
+**POST /messages**
+----
+  Creates a new Message and returns a result message.
+* **URL Params**  
+  None
+* **Headers**  
+  Content-Type: application/json  
+* **Data Params**  
+```
+  {
+    destination: string,
+    message: string
+  }
+```
+* **Success Response:**  
+  * **Code:** 200  
+  **Content:**  `{ resMsg : "Message sent, db success" }`  
+  OR
+  * **Code:** 200  
+  **Content:**  `{ resMsg : "Message sent, db failed" }`  
+    OR
+  * **Code:** 200  
+  **Content:**  `{ resMsg : "Message sent unconfirmed, db success" }`  
+    OR
+  * **Code:** 200  
+  **Content:**  `{ resMsg : "Message sent unconfirmed, db failed" }`  
+
+* **Error Response:**  
+  * **Code:** 504 
+  **Content:** `{ resMsg : "Message could not be sent" }`  
+  OR  
+  * **Code:** 500
+  **Content:** `{ resMsg : "Message could not be sent" }`
+
+
 
 
 
