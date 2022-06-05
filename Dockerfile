@@ -1,11 +1,13 @@
 FROM node:latest
 
-EXPOSE 9001
+# EXPOSE 9001
 
-COPY package*.json ./
-
-RUN npm install
+# COPY package*.json ./
 
 COPY . ./
 
-CMD ["npm", "start"]
+RUN npm install
+
+
+# CMD ["npm", "start"]
+CMD ["node", "server.js"]

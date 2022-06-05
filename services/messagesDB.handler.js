@@ -16,6 +16,10 @@ class MessagesDBService {
         return Message.find()
     }
 
+    deleteAllMessages = () => {
+        return Message.remove()
+    }
+
 }
 
 const messagesDBService = new MessagesDBService()

@@ -57,4 +57,11 @@ router.get("/messages", (req, res) => {
         .catch((err) => res.status(500).json(err))
 })
 
+router.post("/messages/delete", (req, res) => {
+
+    messagesDBService.deleteAllMessages()
+        .then((messages) => res.status(200).json({resMsg: "Messages deleted"}))
+        .catch((err) => res.status(500).json(err))
+})
+
 module.exports = router
