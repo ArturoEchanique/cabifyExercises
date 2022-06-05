@@ -10,9 +10,9 @@ class MessagesService {
         })
     }
     sendMessage = ({destination, message}) => {
-        
         return this.api.post(`message`, {destination, body:message})
     }
+    
 }
 
 const messagesService = new MessagesService()

@@ -1,7 +1,7 @@
 const router = require("express").Router()
-const messagesService = require("../services/messages.handler.js")
-const checkIfEmpty = require("../utils/checkIfEmpty")
-
+const messagesAPIService = require("../services/messagesAPI.handler.js")
+const messagesDBService = require("../services/messagesDB.handler.js")
+const testSendMessageRequest = require("../utils/testSendMessageRequest")
 
 router.get("/hello-world", (req, res) => {
 
@@ -10,34 +10,58 @@ router.get("/hello-world", (req, res) => {
 
 router.post("/messages", (req, res) => {
 
-
-    if (!('destination' in req.body)) {
-        res.status(400).json({ message: 'Destination key is required' })
-    }
-    else if (!('message' in req.body)) {
-        res.status(400).json({ message: 'Message key is required' })
-    }
-
+    const { hasFailed, status, resMessage } = testSendMessageRequest(req.body)
+    if (hasFailed) res.status(status).json({ resMsg: resMessage })
     else {
-
         const { destination, message } = req.body
-        
-        if (checkIfEmpty(destination) && checkIfEmpty(message)) {
-            res.status(422).json({ message: 'Destination and message fields are required' })
-        } else if (checkIfEmpty(destination)) {
-            res.status(422).json({ message: 'Destination field is required' })
-        } else if (checkIfEmpty(message)) {
-            res.status(422).json({ message: 'Message field is required' })
-        } else if (Object.keys(req.body).length > 2) {
-            res.status(413).json({ message: 'Payload must not contain keys different to _destination_ and _message_' })
-        } else {
-            messagesService
-                .sendMessage({ destination, message })
-                .then(response => { res.status(200).json({ message: "Message sent", response: response.data }) })
-                .catch(err => res.status(500).json({ message: "The message could not be sent" }))
-        }
+        messagesDBService.saveMessage(destination, message, 3)
+            .then(dbMessage => {
+                const messageId = dbMessage._id
+                messagesAPIService
+                    .sendMessage({ destination, message })
+                    .then(() => {
+                        messagesDBService.updateMessageState(messageId, "SENT")
+                            .then(() => {
+                                res.status(200).json({resMsg: "Message sent, db success"})
+                            })
+                            .catch(err => {
+                                res.status(200).json({ resMsg: "Message sent, db failed"})
+                            })
+                    })
+                    .catch(err => {
+                        console.log("err is", err.response.status)
+                        if (err.response.status === 504) {
+                            messagesDBService.updateMessageState(messageId, "SENT-UNCONFIRMED")
+                                .then(() => {
+                                    res.status(200).json({ resMsg: "Message sent unconfirmed, db success"})
+                                })
+                                .catch(() => {
+                                    res.status(200).json({ resMsg: "Message sent unconfirmed, db failed"})
+                                })
+                        }
+                        else {
+                            res.status(500).json({ resMsg: "Message could not be sent"})
+                        }
+                    })
+            })
+            .catch(() => {
+                res.status(500).json({ resMsg: "Message could not be sent" })
+            })
     }
 })
 
+router.get("/messages", (req, res) => {
+
+    messagesDBService.getMessages()
+        .then((messages) => res.status(200).json(messages))
+        .catch((err) => res.status(500).json(err))
+})
+
+router.post("/messages/delete", (req, res) => {
+
+    messagesDBService.deleteAllMessages()
+        .then((messages) => res.status(200).json({resMsg: "Messages deleted"}))
+        .catch((err) => res.status(500).json(err))
+})
 
 module.exports = router

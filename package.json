@@ -5,7 +5,9 @@
   "scripts": {
     "start": "node server.js",
     "test": "mocha",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "docker": "docker-compose up",
+    "start:all": "npm run docker & npm start"
   },
   "dependencies": {
     "axios": "^0.27.2",
