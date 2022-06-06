@@ -5,7 +5,7 @@ import { ValidationError, Validator } from "express-json-validator-middleware";
 import getMessages from "./src/controllers/getMessages.js";
 import sendMessage from "./src/controllers/sendMessage.js";
 
-import increaseBudget from "./src/controllers/increaseBudget.js";
+import addToBudget from "./src/controllers/addToBudget.js";
 
 const app = express();
 
@@ -47,7 +47,7 @@ app.post(
   "/credit",
   bodyParser.json(),
   validate({ body: budgetSchema }),
-  increaseBudget
+  addToBudget
 );
 
 app.get("/messages", getMessages);
