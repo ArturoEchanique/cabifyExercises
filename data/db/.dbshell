@@ -1,0 +1,7 @@
+use test
+show db
+show dbs
+use messagesApp
+show dbs
+show collections
+db.messages.find().pretty()
