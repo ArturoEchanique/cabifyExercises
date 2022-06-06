@@ -1,13 +1,15 @@
 import http from "http";
 
 import saveMessage from "../clients/saveMessage.js";
+import checkHasBudget from "../clients/checkHasBudget.js";
+import increaseBudget from "../clients/increaseBudget.js";
 
 export default async (req, res) => {
   const body = JSON.stringify(req.body);
 
   const postOptions = {
-    host: "127.0.0.1",
-    // host: "messageapp",
+    // host: "127.0.0.1",
+    host: "messageapp",
     port: 3000,
     path: "/message",
     method: "post",
@@ -22,6 +24,7 @@ export default async (req, res) => {
 
   postReq.on("response", async (postRes) => {
     try {
+      await increaseBudget(-1);
       await saveMessage({
         ...req.body,
         status: postRes.statusCode === 200 ? "OK" : "ERROR",
@@ -60,6 +63,20 @@ export default async (req, res) => {
     res.end(error.message);
   });
 
-  postReq.write(body);
-  postReq.end();
+  if(await checkHasBudget()){
+    console.log("there is enought budget")
+    postReq.write(body);
+    postReq.end();
+  }
+  else{
+    console.log("there is NOT enought budget")
+    res.statusCode = 500
+    // res.body = {resMsg: "There is no credit left"}
+    res.end("There is no credit left")
+    
+  }
+
+  // postReq.write(body);
+  // postReq.end();
+
 }
