@@ -12,6 +12,7 @@ const app = express();
 const validator = new Validator({ allErrors: true });
 const { validate } = validator;
 
+
 const messageSchema = {
   type: "object",
   required: ["destination", "body"],
