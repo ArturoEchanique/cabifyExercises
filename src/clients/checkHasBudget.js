@@ -1,16 +1,28 @@
 import { Budget } from "../models/budget.js";
 import { RepBudget } from "../models/budget.js";
 
+
+
 import lockedSync from "locked-sync"
 const sync = lockedSync();
 
 
 export default async () => {
 
-    const end = await sync();
-    let currentBudgetAmount = 0
+    let messagesBudget
+    const end = await sync()
     try {
-        const messagesBudget = await Budget.findOne();
+         messagesBudget = await Budget.findOne()
+    }
+    catch (err) {
+        messagesBudget = await RepBudget.findOne()
+        console.log("Error while accessing budget", err)
+    }
+    finally {
+        end()
+    }
+    let currentBudgetAmount = 0
+
         if (messagesBudget) {
             currentBudgetAmount = messagesBudget.amount
             if (currentBudgetAmount > 0) {
@@ -22,13 +34,6 @@ export default async () => {
                 return false
             }
         }
-        else throw "There is no budget"
-        
-    } catch (err) {
-        console.log("Error while accessing budget", err);
-    }
-    finally {
-        end()
-    }
+
 
 }

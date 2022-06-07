@@ -4,8 +4,8 @@ import { RepBudget } from "../models/budget.js";
 
 export default async (req, res) => {
     const {amount} = req.body
-    const budget = await addToBudget(Budget, amount);
-    const repBudget = await addToBudget(RepBudget, amount);
+    const budget = await addToBudget(amount);
+    // const repBudget = await addToBudget(RepBudget, amount);
 
-    res.json(repBudget);
+    res.json(budget);
 }
