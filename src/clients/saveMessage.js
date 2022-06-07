@@ -1,4 +1,5 @@
-import Message from "../models/message.js";
+import {Message} from "../models/message.js";
+import {RepMessage} from "../models/message.js";
 
 export default async (messageParams) => {
 
