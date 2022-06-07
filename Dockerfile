@@ -1,11 +1,8 @@
 FROM node:latest
-
-EXPOSE 9001
-
-COPY package*.json ./
-
+ADD . /app
+WORKDIR /app
 RUN npm install
 
-COPY . ./
 
-CMD ["npm", "start"]
+# CMD ["DEBUG=express:*", "node", "index.js"]
+CMD ["node", "index.js"]

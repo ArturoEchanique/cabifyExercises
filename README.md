@@ -1,8 +1,15 @@
-Server Routes
+# Exercise 3 solution
 
-| METHOD |             URL              |              DESCRIPTION              |
-| ------ | :--------------------------: | :-----------------------------------: |
-| GET    | /hello-world                 | returns a "hello world"               |
-| POST   | /messages                    | send a message                        |
+## Getting started
 
-You can test the API running a command line and executing a Postman collection. You can read further information in the [API testing documentation](https://github.com/ArturoEchanique/cabifyExercises/blob/arturo.echanique/hacking-partner/API%20testing/doc/APITesting.md)
+We are now adding a persistence layer, in our case MongoDB.
+
+Al the source code can be found under `/src` folder with models controllers and database connection
+
+To check results we can run:
+
+1) run messageapp with `npm run docker` on port 3000
+2) run a local app with `npm run app` on port 9001
+3) or run both servers in one command `npm run start:all`
+
+You can run `./curl_requests.sh` to run some curl into the app and see results.
