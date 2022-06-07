@@ -13,11 +13,11 @@ export default async (incAmount) => {
         setDefaultsOnInsert: true
     };
     try {
-        const dbBudget = await Budget.findOneAndUpdate({}, { $inc: { amount: incAmount } }, options)
+        await Budget.findOneAndUpdate({}, { $inc: { amount: incAmount } }, options)
     }
     catch (err) {
         console.log("Error while increasing budget", err)
-        return 
+        return
     }
     finally {
         end()
@@ -31,7 +31,7 @@ export default async (incAmount) => {
     catch (err) {
         await Budget.findOneAndUpdate({ $inc: { amount: -1 * incAmount } }, options)
         console.log("Error while increasing budget, rolling back", err)
-        return 
+        return
     }
     finally {
         end2()

@@ -19,7 +19,6 @@ const Message = database.model("Message", messageSchema);
 const RepMessage = repDatabase.model("RepMessage", messageSchema);
 export {Message, RepMessage}
 
-
 // let Message = await database()
 // Message = Message.model("Message", messageSchema);
 

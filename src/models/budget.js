@@ -12,15 +12,11 @@ const budgetSchema = new mongoose.Schema({
   },
 });
 
-
-
 const Budget = database.model("Budget", budgetSchema);
 const RepBudget = repDatabase.model("RepBudget", budgetSchema);
 export { Budget, RepBudget }
 
-
 // const Budget = database().model("Budget", budgetSchema);
-
 // let Budget = await database()
 // Budget = Budget.model("Budget", budgetSchema);
 // let RepBudget = {};

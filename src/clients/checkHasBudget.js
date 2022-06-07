@@ -8,7 +8,7 @@ export default async () => {
     let messagesBudget
     const end = await sync()
     try {
-         messagesBudget = await Budget.findOne()
+        messagesBudget = await Budget.findOne()
     }
     catch (err) {
         messagesBudget = await RepBudget.findOne()
@@ -19,15 +19,15 @@ export default async () => {
     }
     let currentBudgetAmount = 0
 
-        if (messagesBudget) {
-            currentBudgetAmount = messagesBudget.amount
-            if (currentBudgetAmount > 0) {
-                console.log("there is enough budget", messagesBudget.amount)
-                return true
-            }
-            else {
-                console.log("there is NOT enough budget", messagesBudget.amount)
-                return false
-            }
+    if (messagesBudget) {
+        currentBudgetAmount = messagesBudget.amount
+        if (currentBudgetAmount > 0) {
+            console.log("there is enough budget", messagesBudget.amount)
+            return true
         }
+        else {
+            console.log("there is NOT enough budget", messagesBudget.amount)
+            return false
+        }
+    }
 }
