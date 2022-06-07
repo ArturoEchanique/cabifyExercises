@@ -4,8 +4,9 @@ import { ValidationError, Validator } from "express-json-validator-middleware";
 
 import getMessages from "./src/controllers/getMessages.js";
 import sendMessage from "./src/controllers/sendMessage.js";
-
 import addToBudget from "./src/controllers/addToBudget.js";
+import recoverDatabase from "./src/controllers/recoverDatabase.js";
+import deleteDatabase from "./src/controllers/deleteDatabase.js";
 
 const app = express();
 
@@ -48,6 +49,18 @@ app.post(
   bodyParser.json(),
   validate({ body: budgetSchema }),
   addToBudget
+);
+
+app.post(
+  "/recover-database",
+  bodyParser.json(),
+  recoverDatabase
+);
+
+app.delete(
+  "/delete-database",
+  bodyParser.json(),
+  deleteDatabase
 );
 
 app.get("/messages", getMessages);

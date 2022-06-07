@@ -5,6 +5,11 @@ import repDatabase from "../repDatabase.js";
 
 const budgetSchema = new mongoose.Schema({
   amount: Number,
+  status: {
+    type: String,
+    enum: ["ERROR", "OK", "TIMEOUT"],
+    default: "OK"
+  },
 });
 
 

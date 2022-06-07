@@ -1,11 +1,7 @@
 import { Budget } from "../models/budget.js";
 import { RepBudget } from "../models/budget.js";
-
-
-
 import lockedSync from "locked-sync"
 const sync = lockedSync();
-
 
 export default async () => {
 
@@ -34,6 +30,4 @@ export default async () => {
                 return false
             }
         }
-
-
 }

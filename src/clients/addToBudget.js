@@ -6,20 +6,14 @@ const sync = lockedSync();
 
 export default async (incAmount) => {
 
-    let mainBudget = {}
-    let budget
-    const initialBudget = 30
     const end = await sync();
+    const options = {
+        upsert: true,
+        new: true,
+        setDefaultsOnInsert: true
+    };
     try {
-        const budget = await Budget.findOne()
-        if (budget) {
-            mainBudget = await Budget.findByIdAndUpdate(budget._id, { amount: budget.amount + incAmount }, { new: true })
-            console.log(mainBudget)
-        }
-        else {
-            mainBudget = await Budget.create({ amount: initialBudget })
-            console.log(mainBudget)
-        }
+        const dbBudget = await Budget.findOneAndUpdate({}, { $inc: { amount: incAmount } }, options)
     }
     catch (err) {
         console.log("Error while increasing budget", err)
@@ -28,22 +22,19 @@ export default async (incAmount) => {
     finally {
         end()
     }
-
+    const end2 = await sync();
     try {
-        const budget = await RepBudget.findOne()
-        if (budget) {
-            await RepBudget.findByIdAndUpdate(budget._id, { amount: budget.amount + incAmount }, { new: true })
-        }
-        else {
-            await RepBudget.create({ amount: initialBudget })
-        }
-        return mainBudget
+        const repBudget = await RepBudget.findOneAndUpdate({}, { $inc: { amount: incAmount } }, options)
+        return repBudget
 
     }
     catch (err) {
-        await Budget.findByIdAndUpdate(mainBudget._id, { amount: mainBudget.amount - incAmount }, { new: true })
+        await Budget.findOneAndUpdate({ $inc: { amount: -1 * incAmount } }, options)
         console.log("Error while increasing budget, rolling back", err)
         return 
+    }
+    finally {
+        end2()
     }
 
 }
