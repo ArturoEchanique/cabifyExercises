@@ -68,11 +68,15 @@ export default async (req, res) => {
     postReq.write(body);
     postReq.end();
   }
+ 
   else{
     console.log("there is NOT enought budget")
     res.statusCode = 500
     res.end("There is no credit left")
     
   }
+
+  // postReq.write(body);
+  // postReq.end();
 
 }

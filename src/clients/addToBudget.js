@@ -1,4 +1,5 @@
-import Budget from "../models/budget.js";
+import { Budget } from "../models/budget.js";
+import { RepBudget } from "../models/budget.js";
 
 import lockedSync from "locked-sync"
 const sync = lockedSync();
@@ -6,24 +7,34 @@ const sync = lockedSync();
 export default async (incAmount) => {
 
     const end = await sync();
-    let updatedBudget
-    const budget = await Budget.findOne()
-    const initialBudget = 30
+    const options = {
+        upsert: true,
+        new: true,
+        setDefaultsOnInsert: true
+    };
     try {
-    if (budget){
-        updatedBudget = await Budget.findByIdAndUpdate(budget._id, { amount: budget.amount + incAmount }, {new: true})
+        await Budget.findOneAndUpdate({}, { $inc: { amount: incAmount } }, options)
     }
-    else{
-        updatedBudget = await Budget.create({ amount: initialBudget})
-    }
-    return updatedBudget
-    
-    } 
-    catch(err) {
+    catch (err) {
         console.log("Error while increasing budget", err)
-    } 
+        return
+    }
     finally {
         end()
+    }
+    const end2 = await sync();
+    try {
+        const repBudget = await RepBudget.findOneAndUpdate({}, { $inc: { amount: incAmount } }, options)
+        return repBudget
+
+    }
+    catch (err) {
+        await Budget.findOneAndUpdate({ $inc: { amount: -1 * incAmount } }, options)
+        console.log("Error while increasing budget, rolling back", err)
+        return
+    }
+    finally {
+        end2()
     }
 
 }
