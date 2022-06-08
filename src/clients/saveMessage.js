@@ -3,8 +3,14 @@ import { RepMessage } from "../models/message.js";
 
 export default async (messageParams) => {
 
-  const message = new Message(messageParams);
-  const repMessage = new RepMessage(messageParams);
+  let message = new Message(messageParams);
+  let repMessage = new RepMessage(messageParams);
+
+  if (messageParams.hasOwnProperty('_id')) {
+    console.log("id is", messageParams._id)
+    message = Message.findById(messageParams._id)
+  }
+
   message.backedUp = false
   repMessage.backedUp = false
   let doc = {}
@@ -17,11 +23,10 @@ export default async (messageParams) => {
     console.log("Error while saving on database", err);
   }
   try {
-    doc = await repMessage.save();
-    console.log("repDb message saved succesfully:", doc)
+    await repMessage.save();
+    console.log("repDb message saved succesfully")
     message.backedUp = true
     doc = await message.save()
-    console.log("message updated succesfully:", doc);
   }
   catch (err) {
     console.log("Error while saving on repDatabase", err);
