@@ -16,8 +16,6 @@ const app = express();
 const validator = new Validator({ allErrors: true });
 const { validate } = validator;
 
-console.log("parsae int is", parseInt(077))
-
 const messageSchema = {
   type: "object",
   required: ["destination", "body"],
