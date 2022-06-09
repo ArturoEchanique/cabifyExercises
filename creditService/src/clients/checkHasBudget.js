@@ -3,11 +3,13 @@ import lockedSync from "locked-sync"
 const sync = lockedSync();
 
 export default async () => {
-
     let messagesBudget
     const end = await sync()
     try {
         messagesBudget = await Budget.findOne()
+        if (!messagesBudget) {
+            messagesBudget = await Budget.create({ amount: 50 })
+        }
     }
     catch (err) {
         console.log("Error while accessing budget", err)
@@ -15,8 +17,8 @@ export default async () => {
     finally {
         end()
     }
+    console.log("messagesBudget is", messagesBudget)
     let currentBudgetAmount = 0
-
     if (messagesBudget) {
         currentBudgetAmount = messagesBudget.amount
         if (currentBudgetAmount > 0) {

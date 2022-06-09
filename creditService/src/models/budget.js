@@ -4,7 +4,6 @@ import database from "../creditDatabase.js";
 
 const budgetSchema = new mongoose.Schema({
   amount: Number,
-  messageId: Number,
   status: {
     type: String,
     enum: ["ERROR", "OK", "TIMEOUT"],

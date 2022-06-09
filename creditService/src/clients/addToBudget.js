@@ -6,13 +6,15 @@ const sync = lockedSync();
 export default async (incAmount) => {
 
     const end = await sync();
+    let budget = {}
     const options = {
         upsert: true,
         new: true,
         setDefaultsOnInsert: true
     };
     try {
-        await Budget.findOneAndUpdate({}, { $inc: { amount: incAmount } }, options)
+        console.log("trying to find budget")
+        budget = await Budget.findOneAndUpdate({}, { $inc: { amount: incAmount } }, options)
     }
     catch (err) {
         console.log("Error while increasing budget", err)
@@ -20,5 +22,6 @@ export default async (incAmount) => {
     }
     finally {
         end()
+        return budget
     }
 }

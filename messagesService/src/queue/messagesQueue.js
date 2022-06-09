@@ -5,11 +5,13 @@ let messagesQueue
 let creditQueue
 
 messagesQueue = new Queue("messagesQueue", {
-    redis: { host: "localhost", port: 6379 }
+    redis: { host: "redis", port: 6379 }
 });
+console.log("REDIS_HOST ENV variable is...", process.env.REDIS_HOST)
 creditQueue = new Queue("creditQueue", {
-    redis: { host: "localhost", port: 6379 }
+    redis: { host: "redis", port: 6379 }
 });
+console.log("added elements to both queues")
 // creditQueue.add({ name: "this queue has to be processed by credit", age: 30 });
 // messagesQueue.add({ name: "this queue has to be processed by messages", age: 30 });
 messagesQueue.process(async (job, done) => {

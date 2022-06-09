@@ -9,6 +9,8 @@ import addToBudget from "./src/controllers/addToBudget.js";
 import recoverDatabase from "./src/controllers/recoverDatabase.js";
 import deleteDatabase from "./src/controllers/deleteDatabase.js";
 import { creditQueue, messagesQueue } from "./src/queue/messagesQueue.js"
+// require('dotenv').config();
+import dotenv from 'dotenv'
 // import { initCreditQueue } from "./src/queue/queue.js"
 
 
@@ -48,12 +50,12 @@ app.post(
   queueMessageToCredit
 );
 
-app.post(
-  "/credit",
-  bodyParser.json(),
-  validate({ body: budgetSchema }),
-  addToBudget
-);
+// app.post(
+//   "/credit",
+//   bodyParser.json(),
+//   validate({ body: budgetSchema }),
+//   addToBudget
+// );
 
 app.post(
   "/recover-database",
