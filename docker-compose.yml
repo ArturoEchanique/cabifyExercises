@@ -15,7 +15,7 @@ services:
   mongodb:
     image: mongo
     volumes:
-      - ./data/db:/data/db
+      - ./messagesService/data/db:/messagesService/data/db
     ports:
       - 27017:27017
     command:
@@ -24,7 +24,7 @@ services:
   mongodbcredit:
     image: mongo
     volumes:
-      - ./creditService/db:/creditService/data/db
+      - ./creditService/data/db:/creditService/data/db
     ports:
       - 27019:27017
     command:
@@ -33,7 +33,7 @@ services:
   mongodbRep:
     image: mongo
     volumes:
-      - ./repData/db:/repData/db
+      - ./messagesService/data/repDb:/messagesService/data/repDb
     ports:
       - 27018:27017
     command:
