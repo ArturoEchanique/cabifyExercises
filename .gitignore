@@ -1,3 +1,6 @@
-node_modules
+creditService/node_modules
+messagesService/node_modules
+creditService/data
+messagesService/data
 .DS_Store
 data

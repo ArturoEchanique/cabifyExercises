@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 
-import database from "../creditDatabase.js";
+import database from "../database.js";
+import repDatabase from "../repDatabase.js";
 
 const budgetSchema = new mongoose.Schema({
   amount: Number,
-  messageId: Number,
   status: {
     type: String,
     enum: ["ERROR", "OK", "TIMEOUT"],
@@ -13,4 +13,5 @@ const budgetSchema = new mongoose.Schema({
 });
 
 const Budget = database.model("Budget", budgetSchema);
-export { Budget}
+const RepBudget = repDatabase.model("RepBudget", budgetSchema);
+export { Budget, RepBudget }
