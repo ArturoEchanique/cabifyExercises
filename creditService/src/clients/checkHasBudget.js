@@ -22,7 +22,7 @@ export default async () => {
     if (messagesBudget) {
         currentBudgetAmount = messagesBudget.amount
         if (currentBudgetAmount > 0) {
-            console.log("there is enough budget", messagesBudget.amount)
+            console.log("there is enough budget: ", messagesBudget.amount)
             return true
         }
         else {

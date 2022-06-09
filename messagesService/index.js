@@ -3,18 +3,12 @@ import express from "express";
 import { ValidationError, Validator } from "express-json-validator-middleware";
 import getMessages from "./src/controllers/getMessages.js";
 import getMessageStatus from "./src/controllers/getMessageStatus.js";
-import queueMessage from "./src/controllers/queueMessage.js";
 import queueMessageToCredit from "./src/controllers/queueMessageToCredit.js";
-import updateBudget from "./src/controllers/updateBudget.js";
 import recoverDatabase from "./src/controllers/recoverDatabase.js";
 import deleteDatabase from "./src/controllers/deleteDatabase.js";
 import { creditQueue, messagesQueue } from "./src/queue/messagesQueue.js"
-// require('dotenv').config();
 import dotenv from 'dotenv'
-// import { initCreditQueue } from "./src/queue/queue.js"
 
-
-// initCreditQueue()
 const app = express();
 
 const validator = new Validator({ allErrors: true });
