@@ -1,16 +1,13 @@
 import bodyParser from "body-parser";
 import express from "express";
 import { ValidationError, Validator } from "express-json-validator-middleware";
-
 import getMessages from "./src/controllers/getMessages.js";
 import getMessageStatus from "./src/controllers/getMessageStatus.js";
-import sendMessage from "./src/controllers/sendMessage.js";
 import queueMessage from "./src/controllers/queueMessage.js";
 import addToBudget from "./src/controllers/addToBudget.js";
 import recoverDatabase from "./src/controllers/recoverDatabase.js";
 import deleteDatabase from "./src/controllers/deleteDatabase.js";
 import {initQueue} from "./src/queue/queue.js"
-// import processQueue  from "./src/queue/processQueue.js"
 
 
 initQueue()
@@ -19,21 +16,7 @@ const app = express();
 const validator = new Validator({ allErrors: true });
 const { validate } = validator;
 
-
-// import Queue from "bull";
-
-// const queue = new Queue("myQueue");
-
-// const main = async () => {
-//   await queue.add({ name: "John", age: 30 });
-// };
-
-// queue.process((job, done) => {
-//   console.log(job.data);
-//   done();
-// });
-
-// main().catch(console.error);
+console.log("parsae int is", parseInt(077))
 
 const messageSchema = {
   type: "object",
