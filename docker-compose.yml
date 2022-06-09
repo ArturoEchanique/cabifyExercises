@@ -1,9 +1,13 @@
 version: "3"
 services:
-  # exercise3:
+  # message_service:
   #   build: .
   #   ports:
-  #      - "9003:9003"
+  #     - "9003:9003"
+  # credit_service:
+  #   build: .
+  #   ports:
+  #     - "9004:9004"
   messageapp:
     image: cabify/backend-bootcamp-messageapp
     ports:
@@ -29,15 +33,15 @@ services:
   redis:
     image: redis
     restart: always
-    volumes: 
+    volumes:
       - ./cache:/data/cache/data
     ports:
       - '6379:6379'
-  redis-commander:
-    container_name: redis-commander
-    image: rediscommander/redis-commander
-    restart: always
-    environment:
-      - REDIS_HOSTS=local:redis:6379
-    ports:
-      - "8081:8081"
+  # redis-commander:
+  #   container_name: redis-commander
+  #   image: rediscommander/redis-commander
+  #   restart: always
+  #   environment:
+  #     - REDIS_HOSTS=local:redis:6379
+  #   ports:
+  #     - "8081:8081"

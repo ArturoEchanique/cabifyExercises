@@ -10,6 +10,9 @@ const messageSchema = new mongoose.Schema({
     type: String,
     enum: ["QUEUED", "PROCESSING", "FINISHED", "ERROR", "TIMEOUT", "OK"],
   },
+  hasCredit: {
+    type: Boolean
+  },
   backedUp: {
     type: Boolean,
   },

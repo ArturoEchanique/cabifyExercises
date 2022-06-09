@@ -13,8 +13,9 @@
     "format:fix": "prettier --write .",
     "test": "jest",
     "app": "node index.js",
+    "creditApp": "node creditService/index.js",
     "docker": "docker-compose up",
-    "start:all": "npm run docker & npm run app"
+    "start:all": "npm run docker & npm run app & npm run creditApp"
   },
   "engineStrict": true,
   "engines": {

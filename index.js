@@ -4,19 +4,19 @@ import { ValidationError, Validator } from "express-json-validator-middleware";
 import getMessages from "./src/controllers/getMessages.js";
 import getMessageStatus from "./src/controllers/getMessageStatus.js";
 import queueMessage from "./src/controllers/queueMessage.js";
+import queueMessageToCredit from "./src/controllers/queueMessageToCredit.js";
 import addToBudget from "./src/controllers/addToBudget.js";
 import recoverDatabase from "./src/controllers/recoverDatabase.js";
 import deleteDatabase from "./src/controllers/deleteDatabase.js";
-import {initQueue} from "./src/queue/queue.js"
+import { creditQueue, messagesQueue } from "./src/queue/messagesQueue.js"
+// import { initCreditQueue } from "./src/queue/queue.js"
 
 
-initQueue()
+// initCreditQueue()
 const app = express();
 
 const validator = new Validator({ allErrors: true });
 const { validate } = validator;
-
-console.log("parsae int is", parseInt(077))
 
 const messageSchema = {
   type: "object",
@@ -45,7 +45,7 @@ app.post(
   "/message",
   bodyParser.json(),
   validate({ body: messageSchema }),
-  queueMessage
+  queueMessageToCredit
 );
 
 app.post(
