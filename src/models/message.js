@@ -6,15 +6,18 @@ import repDatabase from "../repDatabase.js";
 const messageSchema = new mongoose.Schema({
   destination: String,
   body: String,
+  messageId: Number,
   status: {
     type: String,
     enum: ["QUEUED", "PROCESSING", "FINISHED", "ERROR", "TIMEOUT", "OK"],
   },
   hasCredit: {
-    type: Boolean
+    type: Boolean,
+    default: false
   },
   backedUp: {
     type: Boolean,
+    default: false
   },
 });
 

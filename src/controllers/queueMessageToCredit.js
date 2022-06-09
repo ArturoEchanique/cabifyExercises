@@ -1,12 +1,15 @@
 import { creditQueue } from "../queue/messagesQueue.js"
+import saveMessage from "../clients/saveMessage.js";
 
 export default async (req, res) => {
 
-    const message = {
+    console.log("input message is", req.body)
+    const message = await saveMessage({
         ...req.body,
-        messageId: Math.floor(Math.random() * 99999999),
         status: "QUEUED",
-    }
+        messageId: Math.floor(Math.random() * 99999999)
+    });
+    console.log("QUEUED message is", message)
     try {
         creditQueue.add(message);
         res.statusCode = 200;

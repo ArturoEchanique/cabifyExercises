@@ -7,7 +7,6 @@ export default async (messageParams) => {
   let repMessage = new RepMessage(messageParams);
 
   if (messageParams.hasOwnProperty('_id')) {
-    console.log("id is", messageParams._id)
     message = Message.findById(messageParams._id)
   }
 
@@ -17,7 +16,7 @@ export default async (messageParams) => {
   try {
     doc = await message.save();
     repMessage.backedUp = true
-    console.log("db message saved succesfully:", doc);
+    console.log("db message saved succesfully:");
   }
   catch (err) {
     console.log("Error while saving on database", err);

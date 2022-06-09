@@ -11,8 +11,8 @@ messagesQueue = new Queue("messagesQueue", {
 creditQueue = new Queue("creditQueue", {
     redis: { host: "localhost", port: 6379 }
 });
-creditQueue.add({ name: "this queue has to be processed by credit", age: 30 });
-messagesQueue.add({ name: "this queue has to be processed by messages", age: 30 });
+// creditQueue.add({ name: "this queue has to be processed by credit", age: 30 });
+// messagesQueue.add({ name: "this queue has to be processed by messages", age: 30 });
 messagesQueue.process(async (job, done) => {
     await processQueue(job)
     done();
