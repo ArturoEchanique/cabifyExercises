@@ -13,7 +13,6 @@ export default async (incAmount) => {
         setDefaultsOnInsert: true
     };
     try {
-        console.log("trying to find budget")
         budget = await Budget.findOneAndUpdate({}, { $inc: { amount: incAmount } }, options)
     }
     catch (err) {

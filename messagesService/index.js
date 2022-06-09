@@ -5,7 +5,7 @@ import getMessages from "./src/controllers/getMessages.js";
 import getMessageStatus from "./src/controllers/getMessageStatus.js";
 import queueMessage from "./src/controllers/queueMessage.js";
 import queueMessageToCredit from "./src/controllers/queueMessageToCredit.js";
-import addToBudget from "./src/controllers/addToBudget.js";
+import updateBudget from "./src/controllers/updateBudget.js";
 import recoverDatabase from "./src/controllers/recoverDatabase.js";
 import deleteDatabase from "./src/controllers/deleteDatabase.js";
 import { creditQueue, messagesQueue } from "./src/queue/messagesQueue.js"
@@ -54,7 +54,7 @@ app.post(
 //   "/credit",
 //   bodyParser.json(),
 //   validate({ body: budgetSchema }),
-//   addToBudget
+//   updateBudget
 // );
 
 app.post(

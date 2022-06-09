@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 import bodyParser from "body-parser";
 import express from "express";
 import { ValidationError, Validator } from "express-json-validator-middleware";
-import addToBudget from "./src/controllers/addToBudget.js";
+import updateBudget from "./src/controllers/updateBudget.js";
 
 const app = express();
 
@@ -24,7 +24,7 @@ app.post(
     "/credit",
     bodyParser.json(),
     validate({ body: budgetSchema }),
-    addToBudget
+    updateBudget
 );
 
 app.use((err, req, res, _next) => {

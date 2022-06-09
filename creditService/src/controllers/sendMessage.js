@@ -1,7 +1,7 @@
 import http from "http";
 import updateMessage from "../clients/updateMessage.js";
 import checkHasBudget from "../clients/checkHasBudget.js";
-import addToBudget from "../clients/addToBudget.js";
+import updateBudget from "../clients/updateBudget.js";
 
 export default async (messageId, message) => {
   
@@ -23,7 +23,7 @@ export default async (messageId, message) => {
 
   postReq.on("response", async (postRes) => {
     try {
-      await addToBudget(-1);
+      await updateBudget(-1);
       await updateMessage(messageId, {
         ...message,
         status: postRes.statusCode === 200 ? "OK" : "ERROR",
