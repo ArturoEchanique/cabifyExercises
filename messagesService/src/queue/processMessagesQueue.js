@@ -19,7 +19,7 @@ export default async (job) => {
             ...message,
             status: "FINISHED"
         }
-        console.log("finished message is", await updateMessage(dbId, finishedMessage))
+        console.log("message sent, finished message is", await updateMessage(dbId, finishedMessage))
     }
     else{
         const unsentMessage = {
