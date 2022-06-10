@@ -17,7 +17,6 @@ export default async () => {
     finally {
         end()
     }
-    console.log("messagesBudget is", messagesBudget)
     let currentBudgetAmount = 0
     if (messagesBudget) {
         currentBudgetAmount = messagesBudget.amount

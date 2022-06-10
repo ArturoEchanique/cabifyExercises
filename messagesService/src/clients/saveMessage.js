@@ -16,14 +16,14 @@ export default async (messageParams) => {
   try {
     doc = await message.save();
     repMessage.backedUp = true
-    console.log("db message saved succesfully:");
+    console.log("message saved succesfully");
   }
   catch (err) {
     console.log("Error while saving on database", err);
   }
   try {
     await repMessage.save();
-    console.log("repDb message saved succesfully")
+    console.log("message backed up succesfully")
     message.backedUp = true
     doc = await message.save()
   }

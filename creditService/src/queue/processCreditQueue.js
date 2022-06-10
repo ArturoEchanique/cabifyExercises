@@ -4,10 +4,10 @@ import { creditQueue, messagesQueue } from "../queue/creditQueue.js"
 
 export default async (job) => {
 
-    console.log("processing credit queue:-----------", job.data)
     const message = {
         ...job.data,
     }
+    console.log("credit service is processing message:-----------", message._id)
     if(await checkHasBudget()){
         message.hasCredit = true
         await updateBudget(-1)
