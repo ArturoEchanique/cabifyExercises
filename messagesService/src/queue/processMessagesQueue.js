@@ -15,11 +15,6 @@ export default async (job) => {
     console.log("processing message is", await updateMessage(dbId, processingMessage))
     if (message.hasCredit){
         await sendMessage(dbId, message)
-        const finishedMessage = {
-            ...message,
-            status: "FINISHED"
-        }
-        console.log("message sent, finished message is", await updateMessage(dbId, finishedMessage))
     }
     else{
         const unsentMessage = {

@@ -7,7 +7,6 @@ import queueMessageToCredit from "./src/controllers/queueMessageToCredit.js";
 import recoverDatabase from "./src/controllers/recoverDatabase.js";
 import deleteDatabase from "./src/controllers/deleteDatabase.js";
 import { creditQueue, messagesQueue } from "./src/queue/messagesQueue.js"
-import dotenv from 'dotenv'
 
 const app = express();
 

@@ -5,8 +5,8 @@ export default async (messageId, message) => {
   
   const body = JSON.stringify(message);
   const postOptions = {
-    host: "127.0.0.1",
-    // host: "messageapp",
+    // host: "127.0.0.1",
+    host: "messageapp",
     port: 3000,
     path: "/message",
     method: "post",
@@ -18,15 +18,19 @@ export default async (messageId, message) => {
   };
 
   const postReq = http.request(postOptions);
-
+  let finalMessage
   postReq.on("response", async (postRes) => {
     try {
-      await updateMessage(messageId, {
+      finalMessage = await updateMessage(messageId, {
         ...message,
         status: postRes.statusCode === 200 ? "OK" : "ERROR",
       });
-      if (postRes.statusCode !== 200) {
-        throw new Error('Error in the messageapp request');
+      if (postRes.statusCode == 200) {
+        console.log("message sent, finished message is", finalMessage)
+      }
+      else{
+        console.log("message unsent, error", finalMessage)
+        throw new Error('Error in the messageapp request')
       }
     } catch (error) {
       console.log(error.message);
@@ -42,12 +46,13 @@ export default async (messageId, message) => {
         ...message,
         status: "TIMEOUT",
       });
-
-    } finally {
+    } 
+    catch{
     }
   });
 
   postReq.on("error", (error) => {
+    console.log("error,message unsent", error)
   });
 
   postReq.write(body);
