@@ -56,7 +56,7 @@ export default {
   },
 
   isReplicaOn() {
-    replicaOn = connections[0].isActive && connections[1].isActive;
+    const replicaOn = connections[0].isActive && connections[1].isActive;
     console.log(`Replica is ${replicaOn ? "ON" : "OFF"}`);
     return replicaOn;
   }

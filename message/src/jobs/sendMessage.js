@@ -12,6 +12,7 @@ import urls from "../urls.js";
 const random = (n) => Math.floor(Math.random() * Math.floor(n));
 
 receive_queue.process(async (job, done) => {
+  console.log("trying processing job in message service", job.data)
   const messageData = { ...job.data };
 
   if (job.data.status !== "OK") {
@@ -74,7 +75,7 @@ receive_queue.process(async (job, done) => {
     done();
   });
 
-  postReq.on("error", () => {});
+  postReq.on("error", () => { });
 
   postReq.write(JSON.stringify(messageData));
   postReq.end();
@@ -98,6 +99,7 @@ export default async function addJob(jobParams) {
   const MessageModel = Message();
   const message = new MessageModel(messageParams);
   await send_queue.add(message, jobOpts);
+  console.log("i thing task is added to credit")
 
   return messageId;
 }

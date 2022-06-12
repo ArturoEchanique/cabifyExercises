@@ -5,6 +5,7 @@ import getCredit from "../clients/getCredit.js";
 
 export default function () {
   receive_queue.process(async (job, done) => {
+    console.log("trying processing job in credit service", job.data)
     const messageData = job.data;
 
     try {
@@ -17,7 +18,7 @@ export default function () {
           status: "ERROR",
         });
       } else {
-        console.error("Credito suficiente");
+        console.log("Credito suficiente");
         await updateCredit(messageData);
         send_queue.add({
           ...messageData,

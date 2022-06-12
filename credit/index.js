@@ -1,4 +1,4 @@
-import express from "express";
+ import express from "express";
 import bodyParser from "body-parser";
 import {
   Validator,
@@ -6,6 +6,7 @@ import {
 } from "express-json-validator-middleware";
 
 import newCredit from "./src/controllers/newCredit.js";
+import getCredit from "./src/controllers/getCredit.js";
 import receiveMessage from "./src/jobs/receiveMessage.js";
 
 const app = express();
@@ -29,6 +30,10 @@ app.post(
   bodyParser.json(),
   validate({ body: creditSchema }),
   newCredit
+);
+
+app.get(
+  "/credit",getCredit
 );
 
 app.use((err, req, res, next) => {
