@@ -8,6 +8,7 @@ import {
 
 import sendMessage from "./src/controllers/sendMessage.js";
 import getMessages from "./src/controllers/getMessages.js";
+import getHealth from "./src/controllers/getHealth.js";
 import getMessageStatus from "./src/controllers/getMessageStatus.js";
 
 const app = express();
@@ -45,6 +46,8 @@ app.post(
 
 app.get("/messages", getMessages);
 
+app.get("/health", getHealth);
+
 app.get("/message/:messageId/status", getMessageStatus);
 
 app.use((err, req, res, next) => {
@@ -56,6 +59,7 @@ app.use((err, req, res, next) => {
   }
 });
 
-app.listen(9007, () => {
+const appid = process.env.APPID
+app.listen(appid, () => {
   console.log("App started on PORT 9007");
 });

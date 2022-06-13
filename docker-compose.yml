@@ -1,10 +1,13 @@
 version: "3"
 services:
-  message:
+  message1:
+    image: message1
+    environment:
+      - APPID=1111
     build: message/
     restart: always
-    ports:
-      - "9007:9007"
+    # ports:
+    #   - "9007:9007"
     links:
       - messageapp
       - mongodb_message
@@ -17,6 +20,55 @@ services:
       - redis
     volumes:
       - "./message:/app"
+  message2:
+    image: message2
+    environment:
+      - APPID=2222
+    build: message/
+    restart: always
+    # ports:
+    #   - "9007:9007"
+    links:
+      - messageapp
+      - mongodb_message
+      - replica_message
+      - redis
+    depends_on:
+      - messageapp
+      - mongodb_message
+      - replica_message
+      - redis
+    volumes:
+      - "./message:/app"
+  message3:
+    image: message3
+    environment:
+      - APPID=3333
+    build: message/
+    restart: always
+    # ports:
+    #   - "9007:9007"
+    links:
+      - messageapp
+      - mongodb_message
+      - replica_message
+      - redis
+    depends_on:
+      - messageapp
+      - mongodb_message
+      - replica_message
+      - redis
+    volumes:
+      - "./message:/app"
+  haproxy:
+    build: ./haproxy
+    container_name: haproxy
+    ports:
+      - "8080:8080"
+    depends_on:
+      - message1
+      - message2
+      - message3
   credit:
     build: credit/
     restart: always
@@ -66,8 +118,9 @@ services:
       - ./message/data/replica:/message/data/replica
     ports:
       - 27028:27028
-
   redis:
     image: redis
     ports:
       - 6379:6379
+
+    # image: haproxy-custom
