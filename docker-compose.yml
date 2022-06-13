@@ -2,8 +2,6 @@ version: "3"
 services:
   message1:
     image: message1
-    environment:
-      - APPID=1111
     build: message/
     restart: always
     # ports:
@@ -22,12 +20,10 @@ services:
       - "./message:/app"
   message2:
     image: message2
-    environment:
-      - APPID=2222
     build: message/
     restart: always
     # ports:
-    #   - "9007:9007"
+    #   - "9008:9007"
     links:
       - messageapp
       - mongodb_message
@@ -42,12 +38,10 @@ services:
       - "./message:/app"
   message3:
     image: message3
-    environment:
-      - APPID=3333
     build: message/
     restart: always
     # ports:
-    #   - "9007:9007"
+    #   - "9009:9007"
     links:
       - messageapp
       - mongodb_message
