@@ -47,11 +47,10 @@ services:
       - redis
     volumes:
       - "./message:/app"
-
   message2:
     image: message
     deploy:
-      replicas: 1
+      replicas: 4
     build: message-v2/
     restart: always
     ports:
@@ -71,16 +70,22 @@ services:
       - redis
     volumes:
       - "./message-v2:/app"
-
   credit:
     build: credit/
-    restart: always
+    deploy:
+      replicas: 4
     ports:
-      - "9017:9017"
+      - 90
+    environment:
+      - SERVICE_NAME=service-v3
+    restart: always
+    # ports:
+    #   - "9017:9017"
     links:
       - mongodb_credit
       - replica_credit
       - redis
+      - balancer
     depends_on:
       - mongodb_credit
       - replica_credit
@@ -91,7 +96,6 @@ services:
     image: cabify/backend-bootcamp-messageapp
     ports:
       - "3000:3000"
-
   mongodb_credit:
     image: mongo
     command: mongod --port 27017
