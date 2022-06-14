@@ -33,7 +33,7 @@ services:
     ports:
       - 80
     environment:
-      - SERVICE_NAME=service-v1
+      - SERVICE_NAME=message-v1
     links:
       - messageapp
       - mongodb_message
@@ -56,7 +56,7 @@ services:
     ports:
       - 80
     environment:
-      - SERVICE_NAME=service-v2
+      - SERVICE_NAME=message-v2
     links:
       - messageapp
       - mongodb_message
@@ -77,7 +77,7 @@ services:
     ports:
       - 90
     environment:
-      - SERVICE_NAME=service-v3
+      - SERVICE_NAME=credit-v1
     restart: always
     # ports:
     #   - "9017:9017"
