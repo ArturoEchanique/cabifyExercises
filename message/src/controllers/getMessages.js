@@ -1,6 +1,7 @@
-import getMessages from "../clients/getMessages.js";
-export default async (req, res) => {
-  const messages = await getMessages();
+const getMessages = require("../clients/getMessages");
 
-  res.json(messages);
+module.exports = function(req, res) {
+  getMessages().then(messages => {
+    res.json(messages);
+  });
 };

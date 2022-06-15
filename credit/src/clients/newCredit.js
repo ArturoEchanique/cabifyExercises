@@ -1,12 +1,12 @@
-import Credit from "../models/credit.js";
-import newCreditTransaction from "../transactions/newCredit.js";
+const Credit = require("../models/credit");
+const newCreditTransaction = require("../transactions/newCredit");
 
-export default (creditParams) => {
-  const CreditModel = Credit()
-  const credit = new CreditModel(creditParams);
-  const conditions = {
+module.exports = function(creditParams, cb) {
+  let CreditModel = Credit()
+  let credit = new CreditModel(creditParams);
+  let conditions = {
     location: credit.location
   };
-  return newCreditTransaction(conditions, creditParams);
+  newCreditTransaction(conditions, creditParams, cb);
 };
 

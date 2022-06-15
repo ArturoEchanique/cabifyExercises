@@ -1,10 +1,9 @@
-import credit from "../models/credit.js";
-import updatecredittransaction from "../transactions/updateCredit.js";
+const credit = require("../models/credit");
+const updatecredittransaction = require("../transactions/updateCredit");
 
-export default (messageparams) => {
-  const conditions = {
+module.exports = function(messageparams, cb) {
+  let conditions = {
     location: messageparams.location.name
   };
-
-  return updatecredittransaction(conditions, messageparams);
+  return updatecredittransaction(conditions, messageparams, cb);
 };

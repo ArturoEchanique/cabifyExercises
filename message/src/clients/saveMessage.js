@@ -1,9 +1,9 @@
-import Message from "../models/message.js";
-import saveMessageTransaction from "../transactions/saveMessage.js";
+const Message = require("../models/message");
+const saveMessageTransaction = require("../transactions/saveMessage");
 
-export default function(messageParams) {
+module.exports = function(messageParams, cb) {
   const MessageModel = Message();
-  const message = new MessageModel(messageParams);
-
-  return saveMessageTransaction(message.toJSON());
+  let message = new MessageModel(messageParams);
+  messageParams = message.toJSON()
+  saveMessageTransaction(messageParams, cb);
 };

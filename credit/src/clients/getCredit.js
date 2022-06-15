@@ -1,5 +1,5 @@
-import Credit from "../models/credit.js";
+const Credit = require("../models/credit");
 
-export default (conditions = { location: "Default" }) => {
+module.exports = function(conditions = { location: "Default" }) {
   return Credit().findOne(conditions);
 };

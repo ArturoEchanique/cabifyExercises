@@ -1,7 +1,7 @@
-import mongoose from "mongoose";
-import database from "../database.js";
-import Credit from "../models/credit.js";
-import { cleanClone } from "../utils.js";
+const mongoose = require("mongoose");
+const database = require("../database");
+const Credit = require("../models/credit");
+const { cleanClone } = require("../utils");
 
 function updateCredit(creditModel, conditions, messageData) {
   return creditModel.findOneAndUpdate(
@@ -59,7 +59,7 @@ function updateCreditTransaction(conditions, messageData) {
       });
     })
     .then(doc => {
-      if (doc === null) {
+      if (doc == null) {
         throw "Credit transaction couldn't be replicated";
       }
       return doc;
@@ -77,14 +77,24 @@ function updateCreditTransaction(conditions, messageData) {
     });
 }
 
-export default async (conditions, messageData) => {
+module.exports = function(conditions, messageData, cb) {
   if (database.isReplicaOn()) {
-    const doc = await updateCreditTransaction(conditions, messageData)
-    console.log("Credit trans. updated successfully", doc);
-    return doc;
+    updateCreditTransaction(conditions, messageData)
+      .then(doc => {
+        console.log("Credit trans. updated successfully", doc);
+        cb(doc)
+      })
+      .catch(err => {
+        cb(undefined, err);
+      });
   } else {
-    const doc = await updateCredit(Credit(), conditions, messageData);
-    console.log("Credit updated successfully", doc);
-    return doc;
+    updateCredit(Credit(), conditions, messageData)
+      .then(doc => {
+        console.log("Credit updated successfully", doc);
+        cb(doc);
+      })
+      .catch(err => {
+        cb(undefined, err);
+      });
   }
 };

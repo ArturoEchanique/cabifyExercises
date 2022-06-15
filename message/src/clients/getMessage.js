@@ -1,5 +1,5 @@
-import Message from "../models/message.js";
+const Message = require("../models/message");
 
-export default (conditions = {}) => {
+module.exports = function(conditions = {}) {
   return Message().findOne(conditions);
 };

@@ -1,11 +1,9 @@
 version: "3"
 services:
-  message1:
-    image: message1
+  message:
     build: message/
-    restart: always
     ports:
-      - "9007:9007"
+      - "9010:9010"
     links:
       - messageapp
       - mongodb_message
@@ -16,58 +14,10 @@ services:
       - mongodb_message
       - replica_message
       - redis
-    volumes:
-      - "./message:/app"
-  message2:
-    image: message2
-    build: message/
-    restart: always
-    ports:
-      - "9008:9007"
-    links:
-      - messageapp
-      - mongodb_message
-      - replica_message
-      - redis
-    depends_on:
-      - messageapp
-      - mongodb_message
-      - replica_message
-      - redis
-    volumes:
-      - "./message:/app"
-  message3:
-    image: message3
-    build: message/
-    restart: always
-    ports:
-      - "9009:9007"
-    links:
-      - messageapp
-      - mongodb_message
-      - replica_message
-      - redis
-    depends_on:
-      - messageapp
-      - mongodb_message
-      - replica_message
-      - redis
-    volumes:
-      - "./message:/app"
-  haproxy:
-    build: ./haproxy
-    container_name: haproxy
-    ports:
-      - "8080:8080"
-    depends_on:
-      - message1
-      - message2
-      - message3
   credit:
     build: credit/
-    restart: always
     ports:
-      - "9017:9017"
+      - "9020:9020"
     links:
       - mongodb_credit
       - replica_credit
@@ -76,10 +26,8 @@ services:
       - mongodb_credit
       - replica_credit
       - redis
-    volumes:
-      - "./credit:/app"
   messageapp:
-    image: cabify/backend-bootcamp-messageapp
+    image: cabify/backend-bootcamp-messageapp:exercise10
     ports:
       - "3000:3000"
 
@@ -112,6 +60,7 @@ services:
       - ./message/data/replica:/message/data/replica
     ports:
       - 27028:27028
+
   redis:
     image: redis
     ports:

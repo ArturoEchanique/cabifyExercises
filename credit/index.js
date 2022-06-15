@@ -1,16 +1,16 @@
- import express from "express";
-import bodyParser from "body-parser";
-import {
+const express = require("express");
+
+const bodyParser = require("body-parser");
+const {
   Validator,
   ValidationError
-} from "express-json-validator-middleware";
+} = require("express-json-validator-middleware");
 
-import newCredit from "./src/controllers/newCredit.js";
-import getCredit from "./src/controllers/getCredit.js";
-import receiveMessage from "./src/jobs/receiveMessage.js";
-
+const newCredit = require("./src/controllers/newCredit");
+const receiveMessage = require("./src/jobs/receiveMessage");
 const app = express();
-const {validate} = new Validator({ allErrors: true });
+const validator = new Validator({ allErrors: true });
+const { validate } = validator;
 
 const creditSchema = {
   type: "object",
@@ -32,11 +32,7 @@ app.post(
   newCredit
 );
 
-app.get(
-  "/credit",getCredit
-);
-
-app.use((err, req, res, next) => {
+app.use(function(err, req, res, next) {
   console.log(res.body);
   if (err instanceof ValidationError) {
     res.sendStatus(400);
@@ -45,8 +41,8 @@ app.use((err, req, res, next) => {
   }
 });
 
-receiveMessage();
+receiveMessage()
 
-app.listen(9017, () => {
-  console.log("App started on PORT 9017");
+app.listen(9020, function() {
+  console.log("App started on PORT 9020");
 });

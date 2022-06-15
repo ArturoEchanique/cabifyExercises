@@ -1,7 +1,7 @@
-import mongoose from "mongoose";
-import database from "../database.js";
+const mongoose = require("mongoose");
+const database = require("../database");
 
-const creditSchema = new mongoose.Schema({
+let creditSchema = new mongoose.Schema({
   location: {
     type: String,
     default: "Default"
@@ -13,4 +13,6 @@ const creditSchema = new mongoose.Schema({
   }
 });
 
-export default (dbKey) => database.get(dbKey).model("Credit", creditSchema);
+creditSchema = creditSchema || mongoose.model('Credit', creditSchema);
+
+module.exports = (dbKey) => database.get(dbKey).model("Credit", creditSchema);

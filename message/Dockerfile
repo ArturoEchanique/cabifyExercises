@@ -1,6 +1,6 @@
-FROM node:18.1.0
+FROM node:latest
 ADD . /app
 WORKDIR /app
 RUN npm install
 
-CMD ["npm", "start"]
+CMD ["node", "index.js"]

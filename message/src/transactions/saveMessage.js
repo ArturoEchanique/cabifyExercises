@@ -1,9 +1,8 @@
-import database from "../database.js";
-import Message from "../models/message.js";
-import { unversionedClone } from "../utils.js";
+const database = require("../database");
+const Message = require("../models/message");
+const { unversionedClone } = require("../utils");
 
 function saveMessage(model, newValue) {
-  /* eslint-disable no-underscore-dangle */
   return model.findOneAndUpdate(
     {
       _id: newValue._id
@@ -14,37 +13,43 @@ function saveMessage(model, newValue) {
       new: true
     }
   );
-  /* eslint-enable no-underscore-dangle */
 }
 
-async function saveMessageReplica(replica, retries) {
-  if (retries <= 0) {
-    return;
-  }
-
-  try {
-    const doc = await saveMessage(Message("replica"), replica)
-    console.log("Message replicated successfully", doc);
-    return doc;
-  } catch {
-    console.log("Error while saving message replica", err);
-    console.log("Retrying...");
-    return saveMessageReplica(replica, retries - 1);
+function saveMessageReplica(replica, retries) {
+  if (retries > 0) {
+    return saveMessage(Message("replica"), replica)
+      .then(doc => {
+        console.log("Message replicated successfully", doc);
+        return doc;
+      })
+      .catch(err => {
+        console.log("Error while saving message replica", err);
+        console.log("Retrying...");
+        return saveMessageReplica(replica, retries - 1);
+      });
   }
 }
 
-export default async (newValue) => {
-  try {
-    const doc = await saveMessage(Message(), newValue);
-    console.log("Message saved successfully:", doc);
+function saveMessageTransaction(newValue) {
+  return saveMessage(Message(), newValue)
+    .then(doc => {
+      console.log("Message saved successfully:", doc);
+      return unversionedClone(doc);
+    })
+    .then(clone => {
+      saveMessageReplica(clone, 3);
+      return clone;
+    })
+    .catch(err => {
+      console.log("Error while saving message", err);
+      throw err;
+    });
+}
 
-    const docWithoutVersion = unversionedClone(doc);
-
-    await saveMessageReplica(docWithoutVersion, 3);
-
-    return docWithoutVersion;
-  } catch (err) {
-    console.log("Error while saving message", err);
-    throw err;
-  }
+module.exports = function(messageParams, cb) {
+  saveMessageTransaction(messageParams)
+    .then(() => cb())
+    .catch(err => {
+      cb(err);
+    });
 };
