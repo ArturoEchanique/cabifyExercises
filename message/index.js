@@ -1,6 +1,9 @@
 const express = require("express");
 const logger = require("loglevel");
 logger.setLevel("info")
+const client = require('prom-client');
+
+
 
 const bodyParser = require("body-parser");
 const {
@@ -48,6 +51,33 @@ app.post(
 app.get("/messages", getMessages);
 
 app.get("/message/:messageId/status", getMessageStatus);
+
+
+
+
+
+const counter = new client.Counter({
+  name: 'metric_name',
+  help: 'metric_help',
+});
+
+// const Counter = client.Counter
+// const c = new Counter({
+//   name: "credit test counter",
+//   help: "Example of a counter",
+//   labelNames: ["code"],
+// })
+
+setInterval( () =>{
+counter.inc()
+}, 500)
+
+
+app.get("/metrics", async (req, res) =>{
+  res.end(await client.register.metrics())
+})
+
+
 
 app.use(function(err, req, res, next) {
   logger.info(res.body);
