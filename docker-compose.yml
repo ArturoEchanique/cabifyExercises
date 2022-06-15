@@ -79,8 +79,6 @@ services:
     environment:
       - SERVICE_NAME=credit-v1
     restart: always
-    # ports:
-    #   - "9017:9017"
     links:
       - mongodb_credit
       - replica_credit
