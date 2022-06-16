@@ -1,6 +1,6 @@
 const sendMessage = require("../jobs/sendMessage");
 const logger = require("loglevel");
-const { counterMet, requestTimeMet, gaugeMet } = require("../metrics/metrics")
+const { counterMet, requestTimeMet} = require("../metrics/metrics")
 
 module.exports = function (req, res) {
   const end = requestTimeMet.startTimer()

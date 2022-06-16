@@ -12,6 +12,8 @@ const breaker = require("../circuit-breaker");
 
 const urls = require("../urls");
 
+const { queueCounterMet} = require("../metrics/metrics")
+
 function sendMessage(messageData, success, failed) {
   const postOptions = {
     host: urls.MESSAGEAPP_HOST,
@@ -115,9 +117,11 @@ module.exports = function addJob(jobParams) {
       return send_queue.add(message, jobOpts);
     })
     .then(() => {
+      queueCounterMet.inc({ result: "enqueued", queue: "messages-send-queue" })
       return messageId;
     })
     .catch((error) => {
+      queueCounterMet.inc({ result: "error", queue: "messages-send-queue" })
       logger.error(error)
       return error
     });

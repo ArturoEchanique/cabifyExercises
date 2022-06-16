@@ -1,5 +1,5 @@
 const getMessage = require("../clients/getMessage");
-const { counterMet, requestTimeMet, gaugeMet } = require("../metrics/metrics")
+const { counterMet, requestTimeMet} = require("../metrics/metrics")
 
 module.exports = function(req, res) {
   const messageId = req.params.messageId;

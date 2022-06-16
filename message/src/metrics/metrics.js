@@ -6,6 +6,12 @@ const counterMet = new client.Counter({
     labelNames: ["status", "route"],
 });
 
+const queueCounterMet = new client.Counter({
+    name: 'Enqueueing_messages',
+    help: 'Enqueueing messages succes-error counts',
+    labelNames: ["result", "queue"],
+});
+
 const requestTimeMet = new client.Histogram({
     name: 'http_request_duration_ms',
     help: 'Duration of HTTP requests in ms',
@@ -14,11 +20,4 @@ const requestTimeMet = new client.Histogram({
     buckets: [0.01, 0.02, 0.03, 0.04, 0.05, 10, 100, 500]
 })
 
-// const gaugeMet = new client.Gauge({
-//     name: "metric_gauge",
-//     help: 'metric_help',
-//     labelNames: ['route'],
-// })
-
-module.exports = { counterMet, requestTimeMet }
-// module.exports = {counterMet, requestTimeMet, gaugeMet}
+module.exports = { counterMet, queueCounterMet, requestTimeMet }

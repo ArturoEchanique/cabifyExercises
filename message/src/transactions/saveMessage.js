@@ -1,6 +1,7 @@
 const Message = require("../models/message");
 const { unversionedClone } = require("../utils");
 const logger = require("loglevel");
+const { requestTimeMet } = require("../metrics/metrics")
 
 function saveMessage(model, newValue) {
   return model.findOneAndUpdate(
@@ -46,10 +47,15 @@ function saveMessageTransaction(newValue) {
     });
 }
 
-module.exports = function(messageParams, cb) {
+module.exports = function (messageParams, cb) {
+  const end = requestTimeMet.startTimer()
   saveMessageTransaction(messageParams)
-    .then(() => cb())
+    .then(() => {
+      cb()
+      end({ status: 200, route: "message-queued-time" })
+    })
     .catch(err => {
+      end({ status: 500, route: "message-queued-time" })
       cb(err);
     });
 };
