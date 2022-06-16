@@ -2,6 +2,7 @@ const express = require("express");
 const logger = require("loglevel");
 logger.setLevel("info")
 const client = require('prom-client');
+const {counterMet, requestTimeMet, gaugeMet} = require("./src/metrics/metrics")
 
 
 
@@ -53,25 +54,25 @@ app.get("/messages", getMessages);
 app.get("/message/:messageId/status", getMessageStatus);
 
 
-const counter = new client.Counter({
-  name: 'metric_name',
-  help: 'metric_help',
-  labelNames: ["code", "endpoint"],
-});
+// const counter = new client.Counter({
+//   name: 'metric_name',
+//   help: 'metric_help',
+//   labelNames: ["code", "endpoint"],
+// });
 
-const requestTime = new client.Histogram({
-  name: 'http_request_duration_ms',
-  help: 'Duration of HTTP requests in ms',
-  labelNames: ['route'],
-  // buckets for response time from 0.1ms to 500ms
-  buckets: [0.10, 5, 15, 50, 100, 200, 300, 400, 500]
-})
+// const requestTime = new client.Histogram({
+//   name: 'http_request_duration_ms',
+//   help: 'Duration of HTTP requests in ms',
+//   labelNames: ['route'],
+//   // buckets for response time from 0.1ms to 500ms
+//   buckets: [0.10, 5, 15, 50, 100, 200, 300, 400, 500]
+// })
 
-let gau = new client.Gauge({
-  name: "metric_gauge",
-  help: 'metric_help',
-  labelNames: ['route'],
-})
+// let gau = new client.Gauge({
+//   name: "metric_gauge",
+//   help: 'metric_help',
+//   labelNames: ['route'],
+// })
 
 
 // var myMetrics = function (req, res, next) {
@@ -90,9 +91,9 @@ let gau = new client.Gauge({
 //   next();
 
 setInterval( () =>{
-counter.inc()
-  requestTime.labels("route").observe(8)
-  gau.set(5)
+counterMet.inc()
+  requestTimeMet.labels("route").observe(8)
+  gaugeMet.set(5)
 }, 500)
 
 
