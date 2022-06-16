@@ -10,7 +10,8 @@ module.exports = function (req, res) {
       const response = {
         messageId
       }
-      end({ status: 200, route: "post-messages" })
+      const duration = end({ status: 200, route: "post-messages" })
+      logger.debug("send message duration is", duration)
       res.statusCode = 200;
       res.end(JSON.stringify(response));
     })

@@ -69,7 +69,7 @@ receive_queue.process(function(job, done) {
       () => fallback(messageData, done)
     );
   } else {
-    logger.error("Credito insuficiente");
+    logger.warn("Credito insuficiente");
     const messageData = Object.assign({}, job.data);
     saveMessage(Object.assign(messageData, { status: "ERROR" }), done);
   }

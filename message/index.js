@@ -2,7 +2,6 @@ const express = require("express");
 const logger = require("loglevel");
 logger.setLevel("info")
 const client = require('prom-client');
-const {counterMet, requestTimeMet, gaugeMet} = require("./src/metrics/metrics")
 
 const bodyParser = require("body-parser");
 const {
