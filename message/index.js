@@ -53,11 +53,14 @@ app.get("/messages", getMessages);
 
 app.get("/message/:messageId/status", getMessageStatus);
 
-
+      // requestTimeMet
+      //   .labels(req.route.path)
+      //   .observe(responseTimeInMs)
+      
 // const counter = new client.Counter({
 //   name: 'metric_name',
 //   help: 'metric_help',
-//   labelNames: ["code", "endpoint"],
+//   labelNames: ["code", "route"],
 // });
 
 // const requestTime = new client.Histogram({

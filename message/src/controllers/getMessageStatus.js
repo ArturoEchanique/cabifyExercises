@@ -5,16 +5,18 @@ module.exports = function(req, res) {
   const messageId = req.params.messageId;
   const conditions = {
     _id: messageId
-  };
-
+  }
+  const end = requestTimeMet.startTimer()
   getMessage(conditions)
     .then(message => {
       if (message == null) {
-        counterMet.inc({ status: 400, endpoint: "get-messageStatus" })
+        end({ status: 400, route: "get-messageStatus" })
+        counterMet.inc({ status: 400, route: "get-messageStatus" })
         res.statusCode = 404;
         res.end("Message not found");
       } else {
-        counterMet.inc({ status: 200, endpoint: "get-messageStatus" })
+        end({ status: 200, route: "get-messageStatus" })
+        counterMet.inc({ status: 200, route: "get-messageStatus" })
         res.json({
           messageId,
           status: message.status

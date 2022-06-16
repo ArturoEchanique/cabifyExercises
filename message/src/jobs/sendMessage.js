@@ -33,20 +33,20 @@ function sendMessage(messageData, success, failed) {
     if (postRes.statusCode === 200) {
       saveMessage(Object.assign(messageData, { status: "OK" }), success);
     } else {
-      logger.error("Error while sending message", err);
+      logger.error("Error while sending message");
       saveMessage(Object.assign(messageData, { status: "ERROR" }), failed);
     }
   });
 
   postReq.on("timeout", () => {
-    logger.error("Timeout Exceeded!", err);
+    logger.error("Timeout Exceeded!");
     postReq.abort();
 
     saveMessage(Object.assign(messageData, { status: "TIMEOUT" }), failed);
   });
 
   postReq.on("error", () => {
-    logger.error("Connection error!", err);
+    logger.error("Connection error!");
     failed();
   });
 
