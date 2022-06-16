@@ -1,7 +1,7 @@
-import mongoose from "mongoose";
-import database from "../database.js";
+const mongoose = require("mongoose");
+const database = require("../database");
 
-const messageSchema = new mongoose.Schema({
+let messageSchema = new mongoose.Schema({
   _id: String,
   destination: String,
   body: String,
@@ -21,4 +21,4 @@ const messageSchema = new mongoose.Schema({
   }
 });
 
-export default (dbKey) => database.get(dbKey).model("Message", messageSchema);
+module.exports = (dbKey) => database.get(dbKey).model("Message", messageSchema);

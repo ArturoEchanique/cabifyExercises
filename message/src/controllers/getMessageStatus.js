@@ -1,22 +1,26 @@
-import getMessage from "../clients/getMessage.js";
+const getMessage = require("../clients/getMessage");
+const { counterMet, requestTimeMet} = require("../metrics/metrics")
 
-export default async (req, res) => {
-  const { messageId } = req.params;
-
+module.exports = function(req, res) {
+  const messageId = req.params.messageId;
   const conditions = {
-    _id: messageId,
-  };
-
-  const message = await getMessage(conditions);
-
-  if (message === null) {
-    res.statusCode = 404;
-    res.end("Message not found");
-    return;
-  } 
-
-  res.json({
-    messageId,
-    status: message.status,
-  });
+    _id: messageId
+  }
+  const end = requestTimeMet.startTimer()
+  getMessage(conditions)
+    .then(message => {
+      if (message == null) {
+        end({ status: 400, route: "get-messageStatus" })
+        counterMet.inc({ status: 400, route: "get-messageStatus" })
+        res.statusCode = 404;
+        res.end("Message not found");
+      } else {
+        end({ status: 200, route: "get-messageStatus" })
+        counterMet.inc({ status: 200, route: "get-messageStatus" })
+        res.json({
+          messageId,
+          status: message.status
+        });
+      }
+    })
 };

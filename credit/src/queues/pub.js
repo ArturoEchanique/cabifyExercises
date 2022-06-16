@@ -1,4 +1,4 @@
-import Bull from "bull";
-import urls from "../urls.js";
+const Bull = require("bull");
+const urls = require("../urls");
 
-export default new Bull("credit-service-queue", urls.REDIS_URL);
+module.exports = new Bull("credit-service-queue", urls.REDIS_URL);

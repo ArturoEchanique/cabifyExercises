@@ -1,6 +1,12 @@
-import getMessages from "../clients/getMessages.js";
-export default async (req, res) => {
-  const messages = await getMessages();
+const getMessages = require("../clients/getMessages");
+const { counterMet, requestTimeMet } = require("../metrics/metrics")
 
-  res.json(messages);
+module.exports = function (req, res) {
+  const end = requestTimeMet.startTimer()
+  getMessages()
+    .then(messages => {
+      end({ status: 200, route: "get-messages" })
+      counterMet.inc({ status: 200, route: "get-messages" })
+      res.json(messages);
+    });
 };

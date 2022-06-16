@@ -1,6 +1,7 @@
-import database from "../database.js";
-import CreditModel from "../models/credit.js";
-import { cleanClone } from "../utils.js";
+const database = require("../database");
+const CreditModel = require("../models/credit");
+const { cleanClone } = require("../utils");
+const logger = require("loglevel");
 
 function newCredit(creditModel, conditions, newValue) {
   return creditModel.findOneAndUpdate(conditions, newValue, {
@@ -10,49 +11,65 @@ function newCredit(creditModel, conditions, newValue) {
   });
 }
 
-async function newCreditTransaction(conditions, newValue) {
+function newCreditTransaction(conditions, newValue) {
 
   const CreditPrimary = CreditModel();
   const CreditReplica = CreditModel("replica");
 
+  let oldValue;
 
-  const primaryCreditDoc = await Promise.resolve(CreditPrimary.findOne(conditions))
-
-  try {
-    const updatedCreditPrimaryTx = await newCredit(CreditPrimary, conditions, newValue);
-    console.log("Credit updated successfully", updatedCreditPrimaryTx);
-
-    const updatedCreditReplicaTx = await newCredit(CreditReplica, conditions, cleanClone(updatedCreditPrimaryTx));
-
-    console.log("Credit replicated successfully", updatedCreditReplicaTx);
-
-
-    if (!updatedCreditReplicaTx) {
-      throw "Credit transaction couldn't be replicated";
-    }
-
-    return updatedCreditReplicaTx;
-
-  } catch (err) {
-    console.log("Error saving credit transaction:", err);
-
-    if (primaryCreditDoc) {
-      primaryCreditDoc.markModified("amount");
-      await primaryCreditDoc.save();
-    }
-
-    throw err;
-  }
+  return Promise.resolve(CreditPrimary.findOne(conditions))
+    .then(doc => {
+      oldValue = doc;
+    })
+    .then(() => {
+      return newCredit(CreditPrimary, conditions, newValue).then(doc => {
+        logger.info("Credit updated successfully", doc);
+        return doc;
+      });
+    })
+    .then(cleanClone)
+    .then(replica => {
+      return newCredit(CreditReplica, conditions, replica).then(doc => {
+        logger.info("Credit replicated successfully", doc);
+        return doc;
+      });
+    })
+    .then(doc => {
+      if (doc == null) {
+        throw "Credit transaction couldn't be replicated";
+      }
+      return doc;
+    })
+    .catch(err => {
+      logger.info("Error saving credit transaction:", err);
+      if (oldValue) {
+        oldValue.markModified("amount");
+        oldValue.save().then(() => {
+          throw err;
+        });
+      } else {
+        throw err;
+      }
+    });
 }
 
-export default async (conditions, newValue) => {
+module.exports = function(conditions, newValue, cb) {
   if (database.isReplicaOn()) {
-    const doc = await newCreditTransaction(conditions, newValue);
-    return doc;
+    newCreditTransaction(conditions, newValue)
+      .then(doc => cb(doc))
+      .catch(err => {
+        cb(undefined, err);
+      });
   } else {
-    const doc = await newCredit(Credit(), conditions, newValue);
-    console.log("Credit updated successfully", doc);
-    return doc;
+    newCredit(Credit(), conditions, newValue)
+      .then(doc => {
+        logger.info("Credit updated successfully", doc);
+        cb(doc);
+      })
+      .catch(err => {
+        cb(undefined, err);
+      });
   }
 };
 

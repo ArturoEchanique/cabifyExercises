@@ -1,19 +1,21 @@
-export function filteredClone({ _doc }, ...excludedFields) {
-  return Object.keys(_doc)
-    .filter((key) => excludedFields.includes(key))
-    .reduce(
-      (newCopy, key) => ({
-        ...newCopy,
-        [key]: _doc[key],
-      }),
-      {}
-    );
-}
+function filteredClone(document, ...excludedFields) {
+  const copy = Object.assign({}, document._doc);
+  for (const idx in excludedFields) {
+    delete copy[excludedFields[idx]];
+  }
+  return copy;
+} 
 
-export function cleanClone(document) {
+function cleanClone(document) {
   return filteredClone(document, "_id", "__v");
 }
 
-export function unversionedClone(document) {
+function unversionedClone(document) {
   return filteredClone(document, "__v");
 }
+
+module.exports = {
+  filteredClone,
+  cleanClone,
+  unversionedClone
+};

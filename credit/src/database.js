@@ -1,5 +1,6 @@
-import mongoose from "mongoose";
-import urls from "./urls.js";
+const mongoose = require("mongoose");
+const urls = require("./urls");
+const logger = require("loglevel");
 
 const database = "cabify_bootcamp";
 
@@ -17,7 +18,7 @@ function createConnection(name, server, database) {
 
 function setupConnection(connection, backup) {
   connection.conn.on("disconnected", () => {
-    console.log("Node down:", connection.name);
+    logger.error("Node down:", connection.name);
     connection.isActive = false;
     if (connection.isPrimary) {
       connection.isPrimary = false;
@@ -25,7 +26,7 @@ function setupConnection(connection, backup) {
     }
   });
   connection.conn.on("reconnected", () => {
-    console.log("Node up:", connection.name);
+    logger.info("Node up:", connection.name);
     connection.isActive = true;
     connection.isPrimary = !backup.isPrimary;
   });
@@ -40,24 +41,24 @@ connections[0].isPrimary = true;
 setupConnection(connections[0], connections[1]);
 setupConnection(connections[1], connections[0]);
 
-export default {
-  get(dbKey) {
+module.exports = {
+  get: function(dbKey) {
     let conn;
-    if (dbKey === undefined || dbKey === "primary") {
+    if (dbKey == undefined || dbKey == "primary") {
       conn = connections.find(connection => connection.isPrimary == true);
-    } else if (dbKey === "replica") {
+    } else if (dbKey == "replica") {
       conn = connections.find(connection => connection.isPrimary == false);
     }
     if (conn) {
-      console.log("Requested connection:", dbKey);
-      console.log("Found:", conn.name);
+      logger.info("Requested connection:", dbKey);
+      logger.info("Found:", conn.name);
     }
     return conn.conn;
   },
 
-  isReplicaOn() {
-    const replicaOn = connections[0].isActive && connections[1].isActive;
-    console.log(`Replica is ${replicaOn ? "ON" : "OFF"}`);
+  isReplicaOn: function() {
+    replicaOn = connections[0].isActive && connections[1].isActive;
+    logger.info(`Replica is ${replicaOn ? "ON" : "OFF"}`);
     return replicaOn;
   }
 };
