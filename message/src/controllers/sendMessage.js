@@ -2,10 +2,10 @@ const sendMessage = require("../jobs/sendMessage");
 const logger = require("loglevel");
 const { counterMet, requestTimeMet, gaugeMet } = require("../metrics/metrics")
 
-module.exports = function(req, res) {
+module.exports = function (req, res) {
   sendMessage(req.body)
     .then(messageId => {
-      counterMet.inc({status: 200, endpoint: "post-messages"})
+      counterMet.inc({ status: 200, endpoint: "post-messages" })
       const response = {
         messageId
       };
@@ -20,8 +20,10 @@ module.exports = function(req, res) {
     });
 };
 
-setInterval(() => {
-  counterMet.inc()
-  requestTimeMet.labels("route").observe(8)
-  gaugeMet.set(5)
-}, 500)
+// setInterval(() => {
+//   const rand = Math.random() > 0.7
+//   if (rand) counterMet.inc({ status: 400, endpoint: "post-messages" })
+//   else counterMet.inc({ status: 200, endpoint: "post-messages" })
+//   requestTimeMet.labels("route").observe(8)
+//   gaugeMet.set(5)
+// }, 500)

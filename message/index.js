@@ -90,11 +90,11 @@ app.get("/message/:messageId/status", getMessageStatus);
 //   console.log("my middleware");
 //   next();
 
-setInterval( () =>{
-counterMet.inc()
-  requestTimeMet.labels("route").observe(8)
-  gaugeMet.set(5)
-}, 500)
+// setInterval( () =>{
+// counterMet.inc()
+//   requestTimeMet.labels("route").observe(8)
+//   gaugeMet.set(5)
+// }, 500)
 
 
 app.get("/metrics", async (req, res) =>{
