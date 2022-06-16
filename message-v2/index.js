@@ -8,6 +8,7 @@ import {
 
 import sendMessage from "./src/controllers/sendMessage.js";
 import getMessages from "./src/controllers/getMessages.js";
+import getVersion from "./src/controllers/getVersion.js";
 import getHealth from "./src/controllers/getHealth.js";
 import getMessageStatus from "./src/controllers/getMessageStatus.js";
 
@@ -47,6 +48,8 @@ app.post(
 app.get("/messages", getMessages);
 
 app.get("/health", getHealth);
+
+app.get("/version", getVersion);
 
 app.get("/message/:messageId/status", getMessageStatus);
 
